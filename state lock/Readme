@@ -1,2 +1,21 @@
+
+State locking prevents more than one Terraform command from changing the same state file at the same time.
+
+If state locking is not used:
+  Two people can run Terraform together
+  The state file can get corrupted
+  Infrastructure may break or behave unpredictably
+
+Terraform automatically locks the state whenever it runs commands that modify infrastructure.
+You usually won’t see any message when the lock is applied.
+
+If Terraform cannot get the lock, it will stop and not continue.
+
+Although state locking can be disabled using the -lock option, it is not recommended because it can cause serious issues.
+
+(state locking ensures only one Terraform operation can modify the state file at a time, preventing conflicts and corruption.)
+
+
+
 create S3 bucket 
 create a dynamodb table 
