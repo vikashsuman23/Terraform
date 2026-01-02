@@ -11,11 +11,11 @@ provider "aws" {
 resource "aws_instance" "example" {
   ami = "ami-00ca570c1b6d79f36"
   instance_type = "t3.micro"
-  provider = "aws.ap-south-1"
+  provider = aws.ap-south-1
 }
 
 resource "aws_instance" "example2" {
-  ami = "ami-00ca570c1b6d79f36"
+  ami = "ami-09c54d172e7aa3d9a"
   instance_type = "t3.micro"
-  provider = "aws.eu-west-1"
+  provider = aws.eu-west-1
 }
