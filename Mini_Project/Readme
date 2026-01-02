@@ -1,9 +1,0 @@
-===========================================
-Mini Project - With actual real time File Structure
-==========================================
-
-├── backend.tf   -- contains S3 statefile with statelock in dynamodb
-├── main.tf      -- actual code
-├── output.tf    -- instance details as output
-├── terraform.tfvars  -- variables
-└── variables.tf   -- calling variables from tfvars
