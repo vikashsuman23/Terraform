@@ -4,14 +4,14 @@ resource "aws_vpc" "main_vpc" {
 }
 
 # creating Subnets
-resource "aws_subnet" "public_subnet_az1" {
+resource "aws_subnet" "public_subnet1" {
   vpc_id                  = aws_vpc.main_vpc.id
   cidr_block              = var.subnet1_cidr
   availability_zone       = var.az1
   map_public_ip_on_launch = true
 }
 
-resource "aws_subnet" "public_subnet_az2" {
+resource "aws_subnet" "public_subnet2" {
   vpc_id                  = aws_vpc.main_vpc.id
   cidr_block              = var.subnet2_cidr
   availability_zone       = var.az2
@@ -24,7 +24,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 #Creating Route Tables
-resource "aws_route_table" "public_route_table" {
+resource "aws_route_table" "RT" {
   vpc_id = aws_vpc.main_vpc.id
 
   route {
@@ -34,18 +34,18 @@ resource "aws_route_table" "public_route_table" {
 }
 
 #Creating Subnet Association
-resource "aws_route_table_association" "public_subnet_az1_association" {
-  subnet_id      = aws_subnet.public_subnet_az1.id
-  route_table_id = aws_route_table.public_route_table.id
+resource "aws_route_table_association" "public_subnet1_association" {
+  subnet_id      = aws_subnet.public_subnet1.id
+  route_table_id = aws_route_table.RT.id
 }
 
-resource "aws_route_table_association" "public_subnet_az2_association" {
-  subnet_id      = aws_subnet.public_subnet_az2.id
-  route_table_id = aws_route_table.public_route_table.id
+resource "aws_route_table_association" "public_subnet2_association" {
+  subnet_id      = aws_subnet.public_subnet2.id
+  route_table_id = aws_route_table.RT.id
 }
 
 # Security Group
-resource "aws_security_group" "web_security_group" {
+resource "aws_security_group" "web_sg" {
   name   = "web-sg"
   vpc_id = aws_vpc.main_vpc.id
 
@@ -76,37 +76,37 @@ resource "aws_s3_bucket" "terraform_state_bucket" {
   bucket = var.bucket_name
 }
 
-# EC2 Instances
-resource "aws_instance" "web_server_az1" {
+# Creating 2 EC2 Instances
+resource "aws_instance" "web_server_1" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
-  subnet_id              = aws_subnet.public_subnet_az1.id
-  vpc_security_group_ids = [aws_security_group.web_security_group.id]
+  subnet_id              = aws_subnet.public_subnet1.id
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
   user_data_base64       = base64encode(file("userdata.sh"))
 }
 
-resource "aws_instance" "web_server_az2" {
+resource "aws_instance" "web_server_2" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
-  subnet_id              = aws_subnet.public_subnet_az2.id
-  vpc_security_group_ids = [aws_security_group.web_security_group.id]
+  subnet_id              = aws_subnet.public_subnet2.id
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
   user_data_base64       = base64encode(file("userdata1.sh"))
 }
 
-# Application Load Balancer
-resource "aws_lb" "application_lb" {
+# Creating Application Load Balancer
+resource "aws_lb" "myalb" {
   name               = var.alb_name
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.web_security_group.id]
+  security_groups    = [aws_security_group.web_sg.id]
   subnets            = [
-    aws_subnet.public_subnet_az1.id,
-    aws_subnet.public_subnet_az2.id
+    aws_subnet.public_subnet1.id,
+    aws_subnet.public_subnet2.id
   ]
 }
 
-# Target Group
-resource "aws_lb_target_group" "web_target_group" {
+# Creating Target Group
+resource "aws_lb_target_group" "web-tg" {
   name     = var.target_group_name
   port     = 80
   protocol = "HTTP"
@@ -119,26 +119,26 @@ resource "aws_lb_target_group" "web_target_group" {
 }
 
 # Attach EC2 instances to ALB Target Group
-resource "aws_lb_target_group_attachment" "web_server_az1_attachment" {
-  target_group_arn = aws_lb_target_group.web_target_group.arn
-  target_id        = aws_instance.web_server_az1.id
+resource "aws_lb_target_group_attachment" "web_server_1_attachment" {
+  target_group_arn = aws_lb_target_group.web-tg.arn
+  target_id        = aws_instance.web_server_1.id
   port             = 80
 }
 
-resource "aws_lb_target_group_attachment" "web_server_az2_attachment" {
-  target_group_arn = aws_lb_target_group.web_target_group.arn
-  target_id        = aws_instance.web_server_az2.id
+resource "aws_lb_target_group_attachment" "web_server_2_attachment" {
+  target_group_arn = aws_lb_target_group.web-tg.arn
+  target_id        = aws_instance.web_server_2.id
   port             = 80
 }
 
 # Listener
 resource "aws_lb_listener" "http_listener" {
-  load_balancer_arn = aws_lb.application_lb.arn
+  load_balancer_arn = aws_lb.myalb.arn
   port              = 80
   protocol          = "HTTP"
 
   default_action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.web_target_group.arn
+    target_group_arn = aws_lb_target_group.web-tg.arn
   }
 }
