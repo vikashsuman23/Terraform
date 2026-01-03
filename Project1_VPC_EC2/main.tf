@@ -77,7 +77,7 @@ resource "aws_s3_bucket" "terraform_state_bucket" {
 }
 
 # Creating 2 EC2 Instances
-resource "aws_instance" "web_server_1" {
+resource "aws_instance" "web_server1" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.public_subnet1.id
@@ -85,7 +85,7 @@ resource "aws_instance" "web_server_1" {
   user_data_base64       = base64encode(file("userdata.sh"))
 }
 
-resource "aws_instance" "web_server_2" {
+resource "aws_instance" "web_server2" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.public_subnet2.id
@@ -119,20 +119,20 @@ resource "aws_lb_target_group" "web-tg" {
 }
 
 # Attach EC2 instances to ALB Target Group
-resource "aws_lb_target_group_attachment" "web_server_1_attachment" {
+resource "aws_lb_target_group_attachment" "web_server1_attachment" {
   target_group_arn = aws_lb_target_group.web-tg.arn
-  target_id        = aws_instance.web_server_1.id
+  target_id        = aws_instance.web_server1.id
   port             = 80
 }
 
-resource "aws_lb_target_group_attachment" "web_server_2_attachment" {
+resource "aws_lb_target_group_attachment" "web_server2_attachment" {
   target_group_arn = aws_lb_target_group.web-tg.arn
-  target_id        = aws_instance.web_server_2.id
+  target_id        = aws_instance.web_server2.id
   port             = 80
 }
 
 # Listener
-resource "aws_lb_listener" "http_listener" {
+resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_lb.myalb.arn
   port              = 80
   protocol          = "HTTP"
