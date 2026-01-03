@@ -18,12 +18,12 @@ resource "aws_subnet" "public_subnet_az2" {
   map_public_ip_on_launch = true
 }
 
-# Internet Gateway
+# creating Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main_vpc.id
 }
 
-# Public Route Table
+#Creating Route Tables
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.main_vpc.id
 
@@ -33,7 +33,7 @@ resource "aws_route_table" "public_route_table" {
   }
 }
 
-# Route Table Associations
+#Creating Subnet Association
 resource "aws_route_table_association" "public_subnet_az1_association" {
   subnet_id      = aws_subnet.public_subnet_az1.id
   route_table_id = aws_route_table.public_route_table.id
