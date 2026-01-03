@@ -44,7 +44,7 @@ resource "aws_route_table_association" "public_subnet2_association" {
   route_table_id = aws_route_table.RT.id
 }
 
-# Security Group
+# Creating Security Group
 resource "aws_security_group" "web_sg" {
   name   = "web-sg"
   vpc_id = aws_vpc.main_vpc.id
