@@ -3,7 +3,7 @@ aws_region = "ap-south-1"
 vpc_cidr     = "192.168.0.0/16"
 subnet1_cidr = "192.168.1.0/24"
 subnet2_cidr = "192.168.2.0/24"
-
+route_cidr   = "0.0.0.0/0"
 az1 = "ap-south-1a"
 az2 = "ap-south-1b"
 
