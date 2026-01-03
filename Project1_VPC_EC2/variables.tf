@@ -18,6 +18,12 @@ description = "passing cidr value for subnet2"
 type = string 
 default     = ""
 }
+
+variable "route_cidr" { 
+description = "passing cidr value for route"
+type = string 
+default     = ""
+}
 variable "az1" { 
 description = "providing availability zone1 details"
 type = string 
