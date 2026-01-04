@@ -10,7 +10,7 @@ az2 = "ap-south-1b"
 ami_id        = "ami-00ca570c1b6d79f36"
 instance_type = "t3.micro"
 
-bucket_name = "terraform-s3-backend-bucket"
+bucket_name = "terraform-s3-backend-bucket-20260104"
 
 alb_name          = "myalb"
 target_group_name = "myTG"
