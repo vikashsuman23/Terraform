@@ -3,6 +3,5 @@ terraform {
     bucket = var.bucket_name
     key    = "RDS_prod/terraform.tfstate"
     region = var.region
-    force_destroy = true
-  }
+     }
 }
