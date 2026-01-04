@@ -76,3 +76,5 @@ variable "db_maintenance_window" {
   type        = string
  
 }
+
+variable "bucket_name" {}
