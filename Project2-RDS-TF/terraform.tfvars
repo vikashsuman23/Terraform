@@ -13,5 +13,5 @@ allocated_storage   = 20
 db_backup_retention_period   = 0 # Free Tier
 db_backup_window   = "03:00-04:00"
 db_maintenance_window    = "sun:05:00-sun:06:00"
-bucket_name = "terraform-s3-backend-bucket"
+bucket_name = "terraform-s3-backend-bucket-20260104"
 
