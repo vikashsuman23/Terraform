@@ -1,5 +1,5 @@
-vpc_id      = "vpc-9a8faff2"  # Replace with your VPC ID
-subnet_ids  = ["subnet-a6c089ce", "subnet-dd942a91"]  # Replace with your subnet IDs
+vpc_id      = "vpc-05bd2484616ca9b26"  # Replace with your VPC ID
+subnet_ids  = ["subnet-02b409e7b093b2b8c", "subnet-0a2d4524a51a20e6e"]  # Replace with your subnet IDs
 
 db_password = "Root123456"
 region		= "ap-south-1"
