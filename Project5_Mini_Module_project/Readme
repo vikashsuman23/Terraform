@@ -1,0 +1,84 @@
+ What problem do Terraform Modules solve?
+
+Imagine you are writing Terraform like this 👇
+
+resource "aws_vpc" "main" { ... }
+resource "aws_subnet" "public" { ... }
+resource "aws_subnet" "private" { ... }
+resource "aws_internet_gateway" "igw" { ... }
+resource "aws_route_table" "rt" { ... }
+
+
+Now imagine:
+
+You need the same setup for dev, qa, and prod
+
+Or another project also needs the same VPC structure
+
+👉 Copy-paste is BAD
+👉 Modules are the solution
+
+
+
+Root Module (MOST IMPORTANT CONCEPT)
+🔹 What is Root Module?
+
+The root module is the folder where you run terraform init and terraform apply.
+
+📁 Example:
+
+terraform-project/
+├── main.tf
+├── variables.tf
+├── outputs.tf
+├── terraform.tfvars
+
+
+👉 This folder itself is a module
+👉 Terraform always starts here
+
+That’s why it’s called ROOT MODULE
+
+🔹 What does Root Module do?
+
+Defines providers (AWS, region)
+
+Calls child modules
+
+Passes values to child modules
+
+Collects outputs
+
+📌 Root module = Orchestrator
+
+
+
+Child Modules (Reusable Building Blocks)
+
+Child modules are modules called from another module (usually root).
+
+📁 Example structure:
+
+terraform-project/
+├── main.tf              ← ROOT MODULE
+├── modules/
+│   ├── vpc/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   └── ec2/
+│       ├── main.tf
+│       ├── variables.tf
+│       ├── outputs.tf
+
+
+Here:
+
+vpc is a child module
+
+ec2 is a child module
+
+
+*****************************************************
+Terraform modules allow you to group related resources into reusable components.
+The root module is the entry point where Terraform runs, and child modules are reusable configurations called by the root module.
