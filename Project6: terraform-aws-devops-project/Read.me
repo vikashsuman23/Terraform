@@ -2,18 +2,22 @@ terraform-aws-devops-project/
 │
 ├── modules/
 │   ├── vpc/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   ├── outputs.tf
+│   │
 │   ├── ec2/
+│       ├── main.tf
+│       ├── variables.tf
+│       ├── outputs.tf
 │
 ├── env/
 │   ├── dev/
 │   │   ├── main.tf
-│   │   ├── backend.tf
+│   │   ├── variables.tf
 │   │   ├── terraform.tfvars
 │   │
 │   └── prod/
 │       ├── main.tf
-│       ├── backend.tf
+│       ├── variables.tf
 │       ├── terraform.tfvars
-│
-├── variables.tf
-├── README.md
