@@ -1,23 +1,117 @@
+# 🚀 Terraform AWS DevOps Project
+
+## 📌 Overview
+
+This project provisions a **production-ready AWS infrastructure** using Terraform with a modular architecture.
+
+It includes VPC, public & private subnets, NAT Gateway, EC2 instances, and environment-based deployment (dev & prod).
+
+---
+
+## 🛠️ Tech Stack
+
+* Terraform
+* AWS (EC2, VPC, Subnet, NAT Gateway, Internet Gateway)
+* Infrastructure as Code (IaC)
+
+---
+
+## 🏗️ Architecture
+
+Public Subnet:
+
+* EC2 (Web Server - Nginx)
+* NAT Gateway
+
+Private Subnet:
+
+* EC2 (App Server - Secure)
+
+Networking:
+
+* VPC
+* Internet Gateway
+* Route Tables
+
+---
+
+## 📁 Project Structure
+
 terraform-aws-devops-project/
 │
 ├── modules/
 │   ├── vpc/
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── outputs.tf
-│   │
 │   ├── ec2/
-│       ├── main.tf
-│       ├── variables.tf
-│       ├── outputs.tf
 │
 ├── env/
 │   ├── dev/
-│   │   ├── main.tf
-│   │   ├── variables.tf
-│   │   ├── terraform.tfvars
-│   │
 │   └── prod/
-│       ├── main.tf
-│       ├── variables.tf
-│       ├── terraform.tfvars
+
+---
+
+## ⚙️ Features
+
+* Modular Terraform design
+* Environment separation (dev & prod)
+* Secure architecture (private subnet)
+* NAT Gateway for outbound internet access
+* Automated EC2 provisioning (Nginx setup)
+
+---
+
+## ▶️ How to Run
+
+### For Dev Environment
+
+cd env/dev
+terraform init
+terraform apply
+
+### For Prod Environment
+
+cd env/prod
+terraform init
+terraform apply
+
+---
+
+## 🧠 Key Concepts Covered
+
+* Terraform Modules
+* VPC Networking
+* Public & Private Subnets
+* NAT Gateway
+* Security Groups
+* Infrastructure Automation
+
+---
+
+## 🎯 Use Case
+
+This project simulates a real-world DevOps setup where:
+
+* Public servers handle incoming traffic
+* Private servers handle backend processing securely
+
+---
+
+## 📌 Future Improvements
+
+* Add Load Balancer (ALB)
+* Add Auto Scaling Group
+* Add CI/CD (GitHub Actions)
+* Integrate with Kubernetes (EKS)
+
+---
+
+                Internet
+                    │
+             Internet Gateway
+                    │
+        -------------------------
+        |                       |
+   Public Subnet         Private Subnet
+        |                       |
+   EC2 (Nginx)            EC2 (App)
+        |
+   NAT Gateway  ────────────────► Internet (outbound only)
